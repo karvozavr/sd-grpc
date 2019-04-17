@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
 
@@ -17,6 +18,12 @@ public class ChatApp extends Application {
 
     private static Stage stage;
     private static Scene menuScene;
+
+    @FXML
+    public VBox chatBox;
+
+    @FXML
+    TextField textField;
 
     private String login;
     private ButtonType buttonTypeServer = new ButtonType("Server");
@@ -95,7 +102,7 @@ public class ChatApp extends Application {
         alert.setTitle("Waiting for client");
         alert.setHeaderText(null);
         alert.setContentText("");
-            boolean success = waitingConnect();
+        boolean success = waitingConnect();
         alert.showAndWait();
     }
 
@@ -161,14 +168,15 @@ public class ChatApp extends Application {
     }
 
     @FXML
-    TextField textField;
-
-    @FXML
     public void onSendButtonClick() {
         String text = textField.getText();
         if (!text.isEmpty()) {
             System.out.println(text);
         }
+    }
+
+    public void addMessage(String message) {
+        chatBox.getChildren().add(new Label("kek"));
     }
 
     private Scene openScene(String sceneName) throws Exception {
