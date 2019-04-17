@@ -176,7 +176,7 @@ public class ChatApp extends Application {
     }
 
     public void addMessage(String message) {
-        chatBox.getChildren().add(new Label("kek"));
+        chatBox.getChildren().add(new Label(message));
     }
 
     private Scene openScene(String sceneName) throws Exception {
