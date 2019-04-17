@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package hse.banana.chat.proto;
+
+message User {
+    string name = 1;
+    int32 id = 2;
+    string address = 3;
+}
+
+message Message {
+    User sender = 1;
+    string text = 2;
+}
+
+message Empty {
+
+}
+
+message SendMessageRequest {
+    User user = 1;
+    Message message = 2;
+}
+
+service BananaChat {
+    rpc SendMessage(SendMessageRequest) returns (Empty) {}
+}
