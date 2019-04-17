@@ -8,11 +8,11 @@ import java.util.ArrayList;
 
 public class ChatService extends BananaChatGrpc.BananaChatImplBase {
 
-    private ArrayList<Chat.Message> messages;
+    private ArrayList<String> messages;
 
     @Override
-    public void sendMessage(Chat.SendMessageRequest request, StreamObserver<Chat.Empty> responseObserver) {
-        Chat.Message message = request.getMessage();
+    public void sendMessage(Chat.Message request, StreamObserver<Chat.Empty> responseObserver) {
+        String message = request.getText();
         messages.add(message);
         responseObserver.onCompleted();
     }

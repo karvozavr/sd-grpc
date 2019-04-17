@@ -4,8 +4,6 @@ package hse.banana.chat.proto;
 
 message User {
     string name = 1;
-    int32 id = 2;
-    string address = 3;
 }
 
 message Message {
@@ -23,5 +21,6 @@ message SendMessageRequest {
 }
 
 service BananaChat {
-    rpc SendMessage(SendMessageRequest) returns (Empty) {}
+    rpc SendMessage(Message) returns (Empty) {}
+    rpc GetMessages(User) returns (stream Message) {}
 }
