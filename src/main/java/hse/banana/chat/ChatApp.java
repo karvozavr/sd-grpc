@@ -28,10 +28,7 @@ public class ChatApp extends Application {
     private String login;
     private ButtonType buttonTypeServer = new ButtonType("Server");
     private ButtonType buttonTypeClient = new ButtonType("Client");
-
-    enum ChoseType {
-        NONE, CLIENT, SERVER
-    }
+    private AbstractMessenger messenger;
 
     /**
      * Sets menu scene
@@ -76,53 +73,19 @@ public class ChatApp extends Application {
             }
         }
 
-        ChoseType type = ChoseType.NONE;
-        while (type == ChoseType.NONE) {
-            Optional<ButtonType> result = createServerClientDialog();
-            if (result.isPresent()) {
-                if (result.get() == buttonTypeClient) {
-                    type = ChoseType.CLIENT;
-                } else {
-                    type = ChoseType.SERVER;
-                }
-            } else {
-                System.exit(0);
-            }
-        }
-
-        if (type == ChoseType.CLIENT) {
-            startClient();
-        } else {
-            startServer();
-        }
-    }
-
-    private void startServer() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Waiting for client");
-        alert.setHeaderText(null);
-        alert.setContentText("");
-        boolean success = waitingConnect();
-        alert.showAndWait();
-    }
-
-    private void startClient() {
-        boolean success = false;
+        success = false;
         while (!success) {
-            Optional<String> result = createClientDialog();
-            if (!result.isPresent()) {
-                System.exit(0);
-            }
-            success = !result.get().isEmpty();
+            Optional<String> result = createChannelDialog();
+            success = result.isPresent() && !result.get().isEmpty();
             if (success) {
-                success = connectToHost(result.get());
-                if (!success) {
-                    createAlertDialog("can't connect");
-                }
+                login = result.get();
             } else {
                 createAlertDialog("empty name");
             }
         }
+
+        messenger = new SimpleMessenger();
+        messenger.subcribe(this::addMessage);
     }
 
     private boolean connectToHost(String host) {
@@ -133,14 +96,6 @@ public class ChatApp extends Application {
         return false;
     }
 
-    private Optional<String> createClientDialog() {
-        TextInputDialog dialog = new TextInputDialog("localhost");
-        dialog.setTitle("Choose server");
-        dialog.setHeaderText("");
-        dialog.setContentText("Please enter your server:");
-        return dialog.showAndWait();
-    }
-
     private Optional<String> createLoginDialog() {
         TextInputDialog dialog = new TextInputDialog("petuh");
         dialog.setTitle("Login");
@@ -149,14 +104,12 @@ public class ChatApp extends Application {
         return dialog.showAndWait();
     }
 
-    private Optional<ButtonType> createServerClientDialog() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog with Custom Actions");
-        alert.setHeaderText("Look, a Confirmation Dialog with Custom Actions");
-        alert.setContentText("Choose your option.");
-
-        alert.getButtonTypes().setAll(buttonTypeServer, buttonTypeClient);
-        return alert.showAndWait();
+    private Optional<String> createChannelDialog() {
+        TextInputDialog dialog = new TextInputDialog("blood");
+        dialog.setTitle("Choose channel");
+        dialog.setHeaderText("");
+        dialog.setContentText("Enter channel name:");
+        return dialog.showAndWait();
     }
 
     private void createAlertDialog(String error) {
@@ -171,7 +124,7 @@ public class ChatApp extends Application {
     public void onSendButtonClick() {
         String text = textField.getText();
         if (!text.isEmpty()) {
-            System.out.println(text);
+            messenger.sendMessage(login, text);
         }
     }
 
