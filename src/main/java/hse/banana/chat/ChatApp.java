@@ -26,8 +26,6 @@ public class ChatApp extends Application {
     TextField textField;
 
     private String login;
-    private ButtonType buttonTypeServer = new ButtonType("Server");
-    private ButtonType buttonTypeClient = new ButtonType("Client");
     private AbstractMessenger messenger;
 
     /**
@@ -88,14 +86,6 @@ public class ChatApp extends Application {
         messenger.subcribe(this::addMessage);
     }
 
-    private boolean connectToHost(String host) {
-        return false;
-    }
-
-    private boolean waitingConnect() {
-        return false;
-    }
-
     private Optional<String> createLoginDialog() {
         TextInputDialog dialog = new TextInputDialog("petuh");
         dialog.setTitle("Login");
@@ -126,9 +116,10 @@ public class ChatApp extends Application {
         if (!text.isEmpty()) {
             messenger.sendMessage(login, text);
         }
+        textField.deleteText(0, text.length());
     }
 
-    public void addMessage(String message) {
+    private void addMessage(String message) {
         chatBox.getChildren().add(new Label(message));
     }
 
