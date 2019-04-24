@@ -21,9 +21,9 @@ javafx {
 }
 
 apply plugin: 'kotlin'
-apply plugin: 'com.google.protobuf'
 apply plugin: 'idea'
 apply plugin: 'application'
+apply plugin: 'org.openjfx.javafxplugin'
 
 jar {
     manifest { attributes 'Main-Class': "${mainClassName}" }
@@ -50,6 +50,8 @@ dependencies {
     compile "io.grpc:grpc-testing:1.+"
     compile group: 'com.rabbitmq', name: 'amqp-client', version: '5.7.0'
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'com.rabbitmq', name: 'amqp-client', version: '5.7.0'
+
 }
 
 compileKotlin {
@@ -57,22 +59,4 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
-}
-
-
-protobuf {
-    protoc {
-        artifact = 'com.google.protobuf:protoc:3.+'
-    }
-    plugins {
-        grpc {
-            artifact = 'io.grpc:protoc-gen-grpc-java:1.+'
-        }
-    }
-    generateProtoTasks {
-        all()*.plugins {
-            grpc {}
-        }
-    }
-    generatedFilesBaseDir = "$projectDir/src"
 }
