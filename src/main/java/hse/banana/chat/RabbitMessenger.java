@@ -12,15 +12,17 @@ import java.util.function.Consumer;
 public class RabbitMessenger extends AbstractMessenger {
 
     private final String channelName;
+    private final String host;
 
-    public RabbitMessenger(String channelName) {
+    public RabbitMessenger(String channelName, String host) {
         this.channelName = channelName;
+        this.host = host;
     }
 
     @Override
     void sendMessage(String login, String message) {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
+        factory.setHost(host);
 
         try (Connection connection = factory.newConnection();
              Channel channel = connection.createChannel()) {
@@ -38,7 +40,7 @@ public class RabbitMessenger extends AbstractMessenger {
         try {
             ConnectionFactory factory = new ConnectionFactory();
 
-            factory.setHost("localhost");
+            factory.setHost(host);
 
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
