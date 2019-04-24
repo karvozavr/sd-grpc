@@ -72,17 +72,18 @@ public class ChatApp extends Application {
         }
 
         success = false;
+        String channel = "";
         while (!success) {
             Optional<String> result = createChannelDialog();
             success = result.isPresent() && !result.get().isEmpty();
             if (success) {
-                login = result.get();
+                channel = result.get();
             } else {
                 createAlertDialog("empty name");
             }
         }
 
-        messenger = new SimpleMessenger();
+        messenger = new RabbitMessenger(channel, "192.168.43.231");
         messenger.subcribe(this::addMessage);
     }
 

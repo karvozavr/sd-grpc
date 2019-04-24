@@ -41,7 +41,6 @@ public class RabbitMessenger extends AbstractMessenger {
             ConnectionFactory factory = new ConnectionFactory();
 
             factory.setHost(host);
-
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
 
