@@ -23,6 +23,9 @@ public class RabbitMessenger extends AbstractMessenger {
     void sendMessage(String login, String message) {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(host);
+        factory.setUsername("admin");
+        factory.setPassword("password");
+
 
         try (Connection connection = factory.newConnection();
              Channel channel = connection.createChannel()) {
@@ -39,6 +42,8 @@ public class RabbitMessenger extends AbstractMessenger {
     void subcribe(Consumer<String> messageAccepter) {
         try {
             ConnectionFactory factory = new ConnectionFactory();
+            factory.setUsername("admin");
+            factory.setPassword("password");
 
             factory.setHost(host);
             Connection connection = factory.newConnection();
